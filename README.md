@@ -1,2 +1,2 @@
 # SQLiteManager
-SQLite Database Manager
+SQLite Database Manager for Android platform 
