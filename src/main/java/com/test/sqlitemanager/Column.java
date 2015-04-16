@@ -14,12 +14,12 @@ public class Column implements IColumn {
     public Column(String name, String type) throws  IllegalArgumentException {
 
         if(name.isEmpty())
-            throw new  IllegalArgumentException ("name must not be empty");
+            throw new  IllegalArgumentException ("name parameter must not be empty!");
 
         this.mName = name.toLowerCase();
         this.mType = !type.isEmpty() ? type.toLowerCase() : SQLiteDataType.TEXT;
 
-        Log.i("Column","name: "+mName+"  type: "+mType);
+        //Log.i("Column","name: "+mName+"  type: "+mType);
     }
 
     @Override

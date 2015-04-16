@@ -1,6 +1,7 @@
 package com.test.sqlitemanager;
 
 import android.content.Context;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -19,28 +20,22 @@ public class Database implements IDatabase {
 
     public Database(String name, Context context) throws IllegalArgumentException {
 
-        if (name == "")
-            throw new IllegalArgumentException("name parameter must not be empty");
+        if (name.isEmpty())
+            throw new IllegalArgumentException("name parameter must not be empty!");
 
         if (context == null)
-            throw new IllegalArgumentException("context parameter must not be null");
+            throw new IllegalArgumentException("context parameter must not be null!");
 
         mName = name;
         mContext = context;
 
         final String path = mContext.getDatabasePath(name).getPath();
-        Log.i("DB", path);
         mSQLiteDatabase = SQLiteDatabase.openOrCreateDatabase(path, null);
     }
 
     @Override
     public String getName() {
         return mName;
-    }
-
-    @Override
-    public void setName(String name) {
-        mName = name;
     }
 
     public SQLiteDatabase getSQLiteDatabase() {
@@ -51,20 +46,18 @@ public class Database implements IDatabase {
     public void addTable(Table table) throws IllegalArgumentException {
 
         if (table == null)
-            throw new IllegalArgumentException("table parameter must not be null");
-
-        Log.i("QUERY", table.getQuery());
+            throw new IllegalArgumentException("table parameter must not be null!");
 
         try {
 
             mSQLiteDatabase.execSQL(table.getQuery());
             table.setDatabase(this);
 
-        } catch (android.database.SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        Log.i("DatabaseManager", "table created");
+        Log.i("SLM msg", "'"+table.getName()+ "' table created!");
 
     }
 
@@ -73,7 +66,7 @@ public class Database implements IDatabase {
     public void removeTable(String name) throws IllegalArgumentException {
 
         if (name.isEmpty())
-            throw new IllegalArgumentException("table parameter must not be empty");
+            throw new IllegalArgumentException("name parameter must not be empty!");
 
         removeTable(getTable(name));
     }
@@ -83,10 +76,10 @@ public class Database implements IDatabase {
     public void removeTable(Table table) {
 
         if (table == null)
-            throw new IllegalArgumentException("table parameter must not be null");
+            throw new IllegalArgumentException("table parameter must not be null!");
 
         if(!hasTable(table)) {
-            Log.i("SLM Error", "table not found!");
+            Log.i("SLM msg", "'"+table.getName()+ "' table not found on database!");
             return;
         }
 
@@ -103,7 +96,7 @@ public class Database implements IDatabase {
     public boolean hasTable(String name) throws IllegalArgumentException {
 
         if (name.isEmpty())
-            throw new IllegalArgumentException("name parameter must not be empty");
+            throw new IllegalArgumentException("name parameter must not be empty!");
 
         for (ITable table : mTables)
             if (table.getName().equals(name))
@@ -117,7 +110,7 @@ public class Database implements IDatabase {
     public boolean hasTable(Table table) throws IllegalArgumentException {
 
         if (table == null)
-            throw new IllegalArgumentException("table parameter must not be null");
+            throw new IllegalArgumentException("table parameter must not be null!");
 
         return hasTable(table.getName());
     }
@@ -129,6 +122,8 @@ public class Database implements IDatabase {
         for (Table table : mTables)
             if (table.getName().equals(name))
                 return table;
+
+        Log.i("SLM msg", "'"+name+ "' table not found on database!");
 
         return null;
     }

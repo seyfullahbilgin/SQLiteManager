@@ -22,7 +22,7 @@ public class Table implements ITable {
     public Table(String name) throws  IllegalArgumentException {
 
         if(name.isEmpty())
-            throw new  IllegalArgumentException ("name parameter must not be empty");
+            throw new  IllegalArgumentException ("name parameter must not be empty!");
 
         mName = name;
         mColumns = new ArrayList<>();
@@ -32,10 +32,10 @@ public class Table implements ITable {
     public Table(String name, ArrayList<IColumn> columns) throws  IllegalArgumentException {
 
         if(name.isEmpty())
-            throw new  IllegalArgumentException ("name parameter must not be empty");
+            throw new  IllegalArgumentException ("name parameter must not be empty!");
 
         if(columns == null)
-            throw new  IllegalArgumentException ("columns parameter must not be null");
+            throw new  IllegalArgumentException ("columns parameter must not be null!");
 
         mName = name;
         mColumns = columns;
@@ -72,7 +72,7 @@ public class Table implements ITable {
     public String getQuery() {
 
         if(mColumns.size() == 0) {
-            Log.i("ERROR", "Table has not any described field" );
+            Log.i("SLM msg", "Table has not any described field!" );
             return null;
         }
 
@@ -106,7 +106,7 @@ public class Table implements ITable {
     public boolean hasColumn(String name)throws IllegalArgumentException {
 
         if (name.isEmpty())
-            throw new IllegalArgumentException("name parameter must not be empty");
+            throw new IllegalArgumentException("name parameter must not be empty!");
 
         for(IColumn column : mColumns)
             if(column.getName().equals(name))
@@ -119,7 +119,7 @@ public class Table implements ITable {
     public boolean hasColumn(IColumn column) {
 
         if (column == null)
-            throw new IllegalArgumentException("column parameter must not be null");
+            throw new IllegalArgumentException("column parameter must not be null!");
 
         return hasColumn(column.getName());
     }

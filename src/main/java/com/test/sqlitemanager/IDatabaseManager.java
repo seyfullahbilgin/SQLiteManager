@@ -7,21 +7,9 @@ import java.util.ArrayList;
  */
 public interface IDatabaseManager {
 
-    public Database createDatabase(String name);
-    public void dropDatabase(String name);
-
-
+    public void createDatabase(String name);
     public Database getDatabase(String name);
-    public ArrayList<Database> getDatabases();
+    public boolean hasDatabase(String name);
 
- /*   public void createDatabase(Database database);
-
-
-    public void dropDatabase(Database database);
-
-    public boolean isDatabaseExists(String name);
-    public boolean isDatabaseExists(Database database);
-
-   */
 
 }

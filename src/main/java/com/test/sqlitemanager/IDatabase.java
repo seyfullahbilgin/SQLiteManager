@@ -8,7 +8,6 @@ import java.util.ArrayList;
 public interface IDatabase {
 
     public String getName();
-    public void setName(String name);
 
     public void execSQL(String query);
     public void addTable(Table table);

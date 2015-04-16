@@ -3,6 +3,7 @@ package com.test.sqlitemanager;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -14,49 +15,49 @@ import java.util.ArrayList;
 public class DatabaseManager implements IDatabaseManager {
 
     private Context mContext;
-    private ArrayList<Database> mDatabases;
     private SQLiteDatabase currentSQLiteDatabase;
 
 
     public DatabaseManager(Context context) {
 
+        if (context == null)
+            throw new IllegalArgumentException("context parameter must not be null!");
+
         mContext = context;
-        mDatabases = new ArrayList<>();
     }
 
 
     @Override
-    public Database createDatabase(String name) {
+    public void createDatabase(String name) {
+
+        if(hasDatabase(name)) {
+            Log.i("SLM msg", "'" + name + "' database is already exists!");
+            return;
+        }
 
         Database database = new Database(name,mContext);
-        mDatabases.add(database);
-
-        return database;
     }
 
     @Override
-    public void dropDatabase(String name) {
-
-       // currentSQLiteDatabase.del
-
+    public boolean hasDatabase(String name) {
+        return mContext.getDatabasePath(name).exists();
     }
 
 
     @Override
     public Database getDatabase(String name) {
 
+        if(!hasDatabase(name)) {
+            Log.i("SLM msg", "'" + name + "' database not found!");
+            return null;
+        }
+
         Database database = new Database(name,mContext);
         currentSQLiteDatabase = database.getSQLiteDatabase();
 
         database.setTables(getTablesFromRealDatabase(database));
-        
+
         return database;
-    }
-
-    @Override
-    public ArrayList<Database> getDatabases() {
-
-        return mDatabases;
     }
 
 
@@ -83,7 +84,6 @@ public class DatabaseManager implements IDatabaseManager {
         }
 
         cursor.close();
-        //sqLiteDatabase.close();
 
         return tables;
     }
@@ -107,11 +107,6 @@ public class DatabaseManager implements IDatabaseManager {
 
         return columns;
     }
-
-
-
-
-
 
 
 }
