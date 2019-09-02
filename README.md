@@ -3,4 +3,4 @@ SQLite Database Manager for Android platform
 
 update
 
-02.09.2019 v 1.3
+02.09.2019 v 1.4
